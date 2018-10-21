@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TerrainMeshMaker : MonoBehaviour
+public class TerrainMapRenderer : MonoBehaviour
 {
-    [SerializeField] public Renderer renderer;
+    [SerializeField] private Renderer renderer;
+    [SerializeField] private MeshFilter meshFilter;
+    [SerializeField] private MeshRenderer meshRenderer;
 
 	// Use this for initialization
 	void Start ()
@@ -22,5 +24,11 @@ public class TerrainMeshMaker : MonoBehaviour
     {
         renderer.sharedMaterial.mainTexture = mapTexture;
         renderer.transform.localScale = new Vector3(mapTexture.width, 1, mapTexture.height);
+    }
+
+    public void RenderMesh(MeshData meshData, Texture2D texture)
+    {
+        meshFilter.sharedMesh = meshData.CreateMesh();
+        meshRenderer.sharedMaterial.mainTexture = texture;
     }
 }

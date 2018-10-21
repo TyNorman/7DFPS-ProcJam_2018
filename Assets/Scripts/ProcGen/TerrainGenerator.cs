@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class TerrainGenerator : MonoBehaviour
 {
-    public enum RenderMode { Noise, Colour };
+    public enum RenderMode { Noise, Colour, Mesh };
 
     [Header("Map Properties")]
     [SerializeField] private RenderMode renderMode = RenderMode.Noise;
@@ -13,10 +13,11 @@ public class TerrainGenerator : MonoBehaviour
     [SerializeField] private int mapWidth;
     [SerializeField] private int mapHeight;
     [SerializeField] private float noiseScale;
+    [SerializeField] private float heightMultiplier;
     [SerializeField] private bool autoUpdate;
 
     [Header("Map Rendering")]
-    [SerializeField] private TerrainMeshMaker terrainMap;
+    [SerializeField] private TerrainMapRenderer terrainMap;
 
     public bool AutoUpdate
     {
@@ -38,7 +39,7 @@ public class TerrainGenerator : MonoBehaviour
     public void GenerateMap()
     {
         float[,] noiseMap = PerlinNoise.GenerateNoiseMap(mapWidth, mapHeight, noiseScale);
-        Color[] biomeColourMap = new Color[mapWidth * mapHeight];
+        Color[] colourMap = new Color[mapWidth * mapHeight];
 
         //Loop through the map and apply heights
         for (int x = 0; x < mapWidth; x++)
@@ -52,7 +53,7 @@ public class TerrainGenerator : MonoBehaviour
                 {
                     if (height <= biomes[i].height)
                     {
-                        biomeColourMap[y * mapWidth + x] = biomes[i].colour;
+                        colourMap[y * mapWidth + x] = biomes[i].colour;
                         break;
                     }
                 }
@@ -60,9 +61,11 @@ public class TerrainGenerator : MonoBehaviour
         }
 
         if (renderMode == RenderMode.Noise)
-            terrainMap.RenderMap(TextureMaker.TextureFromHeightMap(noiseMap) );
+            terrainMap.RenderMap(TextureMaker.TextureFromHeightMap(noiseMap));
         else if (renderMode == RenderMode.Colour)
-            terrainMap.RenderMap(TextureMaker.TextureFromColourMap(biomeColourMap, mapWidth, mapHeight));
+            terrainMap.RenderMap(TextureMaker.TextureFromColourMap(colourMap, mapWidth, mapHeight));
+        else if (renderMode == RenderMode.Mesh)
+            terrainMap.RenderMesh(TerrainMeshGenerator.GenerateTerrainMesh(noiseMap, heightMultiplier), TextureMaker.TextureFromColourMap(colourMap, mapWidth, mapHeight));
 
     }
 }
