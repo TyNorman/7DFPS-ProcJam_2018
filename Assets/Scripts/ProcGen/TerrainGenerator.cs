@@ -16,6 +16,16 @@ public class TerrainGenerator : MonoBehaviour
     [SerializeField] private float heightMultiplier;
     [SerializeField] private bool autoUpdate;
 
+    [Header("Perlin Noise Properties")]
+    [SerializeField] private int octaves;
+
+    [Range(0, 1)]
+    [SerializeField] private float persistance;
+
+    [SerializeField] private float lacunarity;
+    [SerializeField] private int seed;
+    [SerializeField] private Vector2 offset;
+
     [Header("Map Rendering")]
     [SerializeField] private TerrainMapRenderer terrainMap;
 
@@ -38,7 +48,7 @@ public class TerrainGenerator : MonoBehaviour
 
     public void GenerateMap()
     {
-        float[,] noiseMap = PerlinNoise.GenerateNoiseMap(mapWidth, mapHeight, noiseScale);
+        float[,] noiseMap = PerlinNoise.GenerateNoiseMap(mapWidth, mapHeight, seed, noiseScale, octaves, persistance, lacunarity, offset);
         Color[] colourMap = new Color[mapWidth * mapHeight];
 
         //Loop through the map and apply heights
@@ -67,5 +77,18 @@ public class TerrainGenerator : MonoBehaviour
         else if (renderMode == RenderMode.Mesh)
             terrainMap.RenderMesh(TerrainMeshGenerator.GenerateTerrainMesh(noiseMap, heightMultiplier), TextureMaker.TextureFromColourMap(colourMap, mapWidth, mapHeight));
 
+    }
+
+    private void OnValidate()
+    {
+        //Reset any Editor values that would not process properly
+        if (mapWidth < 1)
+            mapWidth = 1;
+        if (mapHeight < 1)
+            mapHeight = 1;
+        if (lacunarity < 1)
+            lacunarity = 1;
+        if (octaves < 0)
+            octaves = 0;
     }
 }
