@@ -28,7 +28,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1649414612904374
 GameObject:
   m_ObjectHideFlags: 0
@@ -39,6 +39,9 @@ GameObject:
   - component: {fileID: 4666877241192090}
   - component: {fileID: 33483137509958106}
   - component: {fileID: 23243870779091746}
+  - component: {fileID: 64189967143713648}
+  - component: {fileID: 64437352866601264}
+  - component: {fileID: 64236889399339434}
   m_Layer: 0
   m_Name: Mesh
   m_TagString: Untagged
@@ -97,9 +100,9 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1649414612904374}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -60, z: 0}
+  m_LocalScale: {x: 10, y: 10, z: 10}
   m_Children: []
   m_Father: {fileID: 4316082661750950}
   m_RootOrder: 1
@@ -113,7 +116,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -188,6 +191,48 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1289409350770262}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!64 &64189967143713648
+MeshCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1649414612904374}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 0}
+--- !u!64 &64236889399339434
+MeshCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1649414612904374}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 0}
+--- !u!64 &64437352866601264
+MeshCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1649414612904374}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 0}
 --- !u!64 &64755046895285634
 MeshCollider:
   m_ObjectHideFlags: 1
@@ -213,27 +258,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 755a8a8e14358764aa35d9a95aa3c83c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  renderMode: 1
+  renderMode: 2
   biomes:
   - terrainType: 0
-    height: 0.38
+    height: 0
     colour: {r: 0.11372549, g: 0.47843137, b: 0.7490196, a: 0}
   - terrainType: 1
-    height: 0.42
+    height: 0.16
     colour: {r: 0.972549, g: 0.85882354, b: 0.7411765, a: 0}
   - terrainType: 2
-    height: 0.68
+    height: 0.6
     colour: {r: 0.101960786, g: 0.6509804, b: 0.30980393, a: 0}
   - terrainType: 3
-    height: 0.83
+    height: 0.8
     colour: {r: 0.6156863, g: 0.5764706, b: 0.6117647, a: 0}
   - terrainType: 4
     height: 1
     colour: {r: 0.8980392, g: 0.91764706, b: 0.9647059, a: 0}
   mapWidth: 100
   mapHeight: 100
-  noiseScale: 25.37
+  noiseScale: 42
+  heightMultiplier: 12
   autoUpdate: 1
+  octaves: 3
+  persistance: 1
+  lacunarity: 1.75
+  seed: 45
+  offset: {x: 0, y: 0}
+  useFalloff: 1
   terrainMap: {fileID: 114695581536434892}
 --- !u!114 &114695581536434892
 MonoBehaviour:

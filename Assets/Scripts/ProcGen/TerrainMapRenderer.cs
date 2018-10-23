@@ -8,6 +8,9 @@ public class TerrainMapRenderer : MonoBehaviour
     [SerializeField] private MeshFilter meshFilter;
     [SerializeField] private MeshRenderer meshRenderer;
 
+    private GameObject meshObject;
+    private MeshCollider meshCollider;
+
 	// Use this for initialization
 	void Start ()
     {
@@ -30,5 +33,13 @@ public class TerrainMapRenderer : MonoBehaviour
     {
         meshFilter.sharedMesh = meshData.CreateMesh();
         meshRenderer.sharedMaterial.mainTexture = texture;
+
+        //Get the mesh GameObject and add a MeshCollider to it
+        if (meshCollider == null)
+        {
+            meshObject = meshRenderer.gameObject;
+            meshCollider = meshObject.AddComponent<MeshCollider>();
+            meshCollider.sharedMesh = meshFilter.sharedMesh;
+        }
     }
 }

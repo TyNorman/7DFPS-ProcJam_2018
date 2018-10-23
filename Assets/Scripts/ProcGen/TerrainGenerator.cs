@@ -26,8 +26,13 @@ public class TerrainGenerator : MonoBehaviour
     [SerializeField] private int seed;
     [SerializeField] private Vector2 offset;
 
+    [Header("Falloff Map Properties")]
+    [SerializeField] private bool useFalloff;
+
     [Header("Map Rendering")]
     [SerializeField] private TerrainMapRenderer terrainMap;
+
+    private float[,] falloffMap;
 
     public bool AutoUpdate
     {
@@ -48,14 +53,22 @@ public class TerrainGenerator : MonoBehaviour
 
     public void GenerateMap()
     {
+        int minSize = Mathf.Min(mapWidth, mapHeight); //Get the smaller size for the FalloffGenerator
+
         float[,] noiseMap = PerlinNoise.GenerateNoiseMap(mapWidth, mapHeight, seed, noiseScale, octaves, persistance, lacunarity, offset);
         Color[] colourMap = new Color[mapWidth * mapHeight];
+        falloffMap = FalloffGenerator.GenerateFalloffMap(minSize);
 
         //Loop through the map and apply heights
         for (int x = 0; x < mapWidth; x++)
         {
             for (int y = 0; y < mapHeight; y++)
             {
+                if (useFalloff) //If using Falloff to create islands, subtract the falloff map and clamp between 0-1 values
+                {
+                    noiseMap[x, y] = Mathf.Clamp(noiseMap[x, y] - falloffMap[x, y], 0, 1);
+                }
+
                 float height = noiseMap[x, y];
 
                 //Loop through the Biomes
