@@ -34,6 +34,12 @@ public class TerrainGenerator : MonoBehaviour
 
     private float[,] falloffMap;
 
+    public int Seed
+    {
+        get { return seed; }
+        set { seed = value; }
+    }
+
     public bool AutoUpdate
     {
         get { return autoUpdate; }

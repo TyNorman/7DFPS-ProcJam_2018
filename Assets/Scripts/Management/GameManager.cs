@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviour
 
     private void CreateMap()
     {
+        //Randomize the seed
+        terrainGenerator.Seed = Mathf.CeilToInt(Random.Range(0, int.MaxValue) );
         terrainGenerator.GenerateMap();
     }
 }
