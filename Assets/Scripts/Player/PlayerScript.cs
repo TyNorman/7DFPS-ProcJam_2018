@@ -21,16 +21,22 @@ public class PlayerScript : MonoBehaviour
     [Header("UI Canvas")]
     [SerializeField] private Canvas canvas;
 
+    [Header("GameMenu")]
+    [SerializeField] private GameMenuComponent gameMenu;
+
     private Color hideFlash = new Color(0, 0, 0, 0);
     private Color showFlash;
 
 	// Use this for initialization
 	void Start ()
     {
+        //Hide the flash
         showFlash = new Color(1, 1, 1, flashAlpha);
         cameraFlash.color = hideFlash;
         photoPreview.enabled = false;
 
+        //Hide the Game Menu
+        ToggleGameMenu(false);
     }
 	
 	// Update is called once per frame
@@ -41,10 +47,12 @@ public class PlayerScript : MonoBehaviour
             TakePhoto();
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape)) //Show the Game Menu
         {
-            //TODO: Add the Menu here
-            Debug.Break();
+            if (gameMenu.enabled == false)
+                ToggleGameMenu(true);
+            else
+                ToggleGameMenu(false);
         }
     }
 
@@ -87,5 +95,12 @@ public class PlayerScript : MonoBehaviour
         Tween cameraTween = cameraFlash.DOColor(hideFlash, 0.5f)
             .SetEase(Ease.Flash)
             .SetDelay(flashDelay);
+    }
+
+    private void ToggleGameMenu(bool showMenu)
+    {
+        gameMenu.InMenu = showMenu;
+        gameMenu.enabled = showMenu;
+        gameMenu.gameObject.SetActive(showMenu);
     }
 }
