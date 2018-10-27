@@ -68,7 +68,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1448562694521096}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: -0.00000016292068}
-  m_LocalPosition: {x: 0, y: 60, z: 0}
+  m_LocalPosition: {x: 0, y: 80, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4114493068599864}
@@ -83,7 +83,7 @@ Camera:
   m_GameObject: {fileID: 1719439223754380}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
+  m_ClearFlags: 1
   m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0.019607844}
   m_projectionMatrixMode: 1
   m_SensorSize: {x: 36, y: 24}
@@ -169,8 +169,8 @@ MonoBehaviour:
   cam: {fileID: 20232190491830400}
   movementSettings:
     ForwardSpeed: 20
-    BackwardSpeed: 4
-    StrafeSpeed: 4
+    BackwardSpeed: 20
+    StrafeSpeed: 20
     JumpForce: 50
     SlopeCurveModifier:
       serializedVersion: 2

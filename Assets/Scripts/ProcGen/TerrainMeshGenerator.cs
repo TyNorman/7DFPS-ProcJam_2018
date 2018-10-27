@@ -23,10 +23,6 @@ public static class TerrainMeshGenerator
                 meshData.vertices[vertIndex] = new Vector3(topLeftX + x, heightMap[x, y] * heightMultiplier, topLeftZ - y);
                 meshData.uvs[vertIndex] = new Vector2(x / (float)width, y / (float)height);
 
-                //NOTE: LEFT OFF HERE
-                //https://www.youtube.com/watch?v=4RpVBYW1r5M&list=PLFt_AvWsXl0eBW2EiBtl_sxmDtSgZBxB3&index=5
-                //12:11
-
                 if (x < width - 1 && y < height - 1) //Ignore the bottom-right edge verts
                 {
                     //Add the MeshData in a clockwise order

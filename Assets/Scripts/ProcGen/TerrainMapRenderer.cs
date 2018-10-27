@@ -11,6 +11,21 @@ public class TerrainMapRenderer : MonoBehaviour
     private GameObject meshObject;
     private MeshCollider meshCollider;
 
+    public GameObject MeshObject
+    {
+        get { return meshObject; }
+    }
+
+    public Mesh TerrainMesh
+    {
+        get { return meshObject.GetComponent<MeshFilter>().mesh; }
+    }
+
+    public MeshCollider meshColliderObj
+    {
+        get { return meshCollider; }
+    }
+
 	// Use this for initialization
 	void Start ()
     {
@@ -35,6 +50,9 @@ public class TerrainMapRenderer : MonoBehaviour
         meshRenderer.sharedMaterial.mainTexture = texture;
 
         //Get the mesh GameObject and add a MeshCollider to it
+        if (meshCollider != null)
+            meshCollider.sharedMesh = meshFilter.sharedMesh;
+
         if (meshCollider == null)
         {
             meshObject = meshRenderer.gameObject;
