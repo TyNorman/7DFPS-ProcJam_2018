@@ -4,6 +4,7 @@ using System.IO;
 
 // example PostProcessor for adjusting automatic Sprite Import settings
 // save this in any "Editor" Folder
+/*
 public class SpriteImportProcessor : AssetPostprocessor
 {
 	void OnPostprocessSprites(Texture2D texture, Sprite[] sprites)
@@ -37,4 +38,4 @@ public class SpriteImportProcessor : AssetPostprocessor
 		
 		importer.SaveAndReimport();
 	}
-}
+}*/

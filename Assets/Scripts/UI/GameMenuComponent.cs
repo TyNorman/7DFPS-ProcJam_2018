@@ -6,14 +6,18 @@ using UnityEngine.UI;
 public class GameMenuComponent : MonoBehaviour
 {
     //This is probably over-complicating it but just in case there's more than 2 options
-    private enum MenuSelection { Resume, Exit };
+    private enum MenuSelection { Resume, Save, Exit };
 
     [Header("Text")]
     [SerializeField] private Text promptResume;
+    [SerializeField] private Text promptSave;
     [SerializeField] private Text promptExit;
 
     [Header("Objects")]
     [SerializeField] private GameObject cursor;
+
+    [Header("Player")]
+    [SerializeField] private PlayerScript playerInfo;
 
     private MenuSelection currentSelection = MenuSelection.Resume;
 
@@ -38,24 +42,30 @@ public class GameMenuComponent : MonoBehaviour
             UpdateCursorMovement(-1);
         else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S)) //Move down
             UpdateCursorMovement(1);
+
+        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space))
+            ProcessSelection();
     }
 
     private void UpdateCursorMovement(int direction)
     {
+        int currentIndex = (int)currentSelection;
+
         if (direction < 0) // Move up
         {
-            if (currentSelection == MenuSelection.Resume)
-                currentSelection = MenuSelection.Exit;
-            else
-                currentSelection = MenuSelection.Resume;
+            currentIndex -= 1;
+
+            if (currentIndex < (int)MenuSelection.Resume)
+                currentIndex = (int)MenuSelection.Exit;
         }
         else //Move down
         {
-            if (currentSelection == MenuSelection.Exit)
-                currentSelection = MenuSelection.Resume;
-            else
-                currentSelection = MenuSelection.Exit;
+            currentIndex += 1;
+
+            if (currentIndex > (int)MenuSelection.Exit)
+                currentIndex = (int)MenuSelection.Resume;
         }
+        currentSelection = (MenuSelection)currentIndex;
 
         PositionCursor();
     }
@@ -68,6 +78,9 @@ public class GameMenuComponent : MonoBehaviour
             case MenuSelection.Resume:
                 newPos.y = promptResume.transform.localPosition.y;
                 break;
+            case MenuSelection.Save:
+                newPos.y = promptSave.transform.localPosition.y;
+                break;
             case MenuSelection.Exit:
                 newPos.y = promptExit.transform.localPosition.y;
                 break;
@@ -76,5 +89,27 @@ public class GameMenuComponent : MonoBehaviour
         }
 
         cursor.transform.localPosition = newPos;
+    }
+
+    private void ProcessSelection()
+    {
+        switch(currentSelection)
+        {
+            case MenuSelection.Resume:
+                playerInfo.ToggleGameMenu(false);
+                break;
+            case MenuSelection.Save:
+                playerInfo.ToggleGameMenu(false);
+                playerInfo.ToggleSaveMenu(true);
+                break;
+
+            case MenuSelection.Exit:
+                //TODO: Add a prompt, go through photo saving before finally quitting
+
+                Application.Quit();
+                break;
+            default:
+                break;
+        }
     }
 }

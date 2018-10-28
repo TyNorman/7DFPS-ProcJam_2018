@@ -7,10 +7,17 @@ public class Plant : MonoBehaviour
     [Header("Plant Sprites")]
     [SerializeField] private Sprite[] plantSprites;
 
-	// Use this for initialization
-	void Start ()
+    private Sprite plantSprite;
+
+    public Sprite PlantSprite
     {
-        RandomizePlantSprite();
+        get { return plantSprite; }
+    }
+
+    // Use this for initialization
+    void Start ()
+    {
+
 	}
 	
 	// Update is called once per frame
@@ -19,7 +26,7 @@ public class Plant : MonoBehaviour
 		
 	}
 
-    private void RandomizePlantSprite()
+    public void RandomizePlantSprite()
     {
         Sprite randSprite = null;
 
@@ -34,5 +41,19 @@ public class Plant : MonoBehaviour
             if (spriteRenderer != null && randSprite != null)
                 spriteRenderer.sprite = randSprite;
         }
+
+        plantSprite = randSprite;
+    }
+
+    public void SetPlantSprite(Sprite forcedSprite)
+    {
+        for (int i = 0; i < gameObject.transform.childCount; i++)
+        {
+            SpriteRenderer spriteRenderer = gameObject.transform.GetChild(i).GetComponent<SpriteRenderer>();
+
+            if (spriteRenderer != null && forcedSprite != null)
+                spriteRenderer.sprite = forcedSprite;
+        }
+        plantSprite = forcedSprite;
     }
 }

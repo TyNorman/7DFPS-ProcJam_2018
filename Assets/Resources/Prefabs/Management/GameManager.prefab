@@ -475,7 +475,7 @@ MonoBehaviour:
   octaves: 3
   persistance: 1
   lacunarity: 1.75
-  seed: 45
+  seed: 38
   offset: {x: 0, y: 0}
   useFalloff: 1
   terrainMap: {fileID: 114753843356763204}

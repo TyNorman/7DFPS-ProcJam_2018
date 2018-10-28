@@ -114,6 +114,8 @@ MonoBehaviour:
   plantSprites:
   - {fileID: 21300000, guid: 765841f7e832d6640b0e008f97269111, type: 3}
   - {fileID: 21300000, guid: 628c266d55eb7e342b9e1d1470b2b0e6, type: 3}
+  - {fileID: 21300000, guid: a4f8f3da9f206c545b9626aedf350f94, type: 3}
+  - {fileID: 21300000, guid: ef5eea1c09204d846ae47a1cdfc420c3, type: 3}
 --- !u!212 &212387842605956608
 SpriteRenderer:
   m_ObjectHideFlags: 1

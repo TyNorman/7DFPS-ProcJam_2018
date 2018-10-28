@@ -18,7 +18,7 @@ public class TerrainMapRenderer : MonoBehaviour
 
     public Mesh TerrainMesh
     {
-        get { return meshObject.GetComponent<MeshFilter>().mesh; }
+        get { return meshObject.GetComponent<MeshFilter>().sharedMesh; }
     }
 
     public MeshCollider meshColliderObj

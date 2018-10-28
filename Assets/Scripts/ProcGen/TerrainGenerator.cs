@@ -6,6 +6,7 @@ using UnityEngine;
 public class TerrainGenerator : MonoBehaviour
 {
     private const float EDGE_OFFSET = 2.0f; //Edge offset to ignore when spawning props (plants, etc.)
+    private const float CLUSTER_OFFSET = 5.0f; //Offset between clustered plants
 
     public enum RenderMode { Noise, Colour, Mesh };
 
@@ -33,6 +34,8 @@ public class TerrainGenerator : MonoBehaviour
 
     [Header("Map Rendering")]
     [SerializeField] private TerrainMapRenderer terrainMap;
+
+    private List<GameObject> plantObjs = new List<GameObject>();
 
     private float[,] falloffMap;
 
@@ -99,8 +102,7 @@ public class TerrainGenerator : MonoBehaviour
             terrainMap.RenderMesh(TerrainMeshGenerator.GenerateTerrainMesh(noiseMap, heightMultiplier), TextureMaker.TextureFromColourMap(colourMap, mapWidth, mapHeight));
 
 
-        if (autoUpdate == false)
-            GeneratePlants(800);
+        GeneratePlants(800);
     }
 
     private void OnValidate()
@@ -133,6 +135,22 @@ public class TerrainGenerator : MonoBehaviour
 
     private void GeneratePlants(int numToGenerate)
     {
+        if (plantObjs != null && plantObjs.Count > 0)
+        {
+            for (int i = 0; i < plantObjs.Count; i++)
+            {
+            #if UNITY_EDITOR
+                DestroyImmediate(plantObjs[i]);
+            #endif
+            #if !UNITY_EDITOR
+                Destroy(plantObjs[i]);
+            #endif
+            }
+
+            plantObjs.Clear();
+        }
+
+
         float meshWidth = terrainMap.TerrainMesh.bounds.extents.x * terrainMap.MeshObject.transform.localScale.x;
         float meshDepth = terrainMap.TerrainMesh.bounds.extents.z * terrainMap.MeshObject.transform.localScale.z;
 
@@ -144,6 +162,46 @@ public class TerrainGenerator : MonoBehaviour
 
             newPlant.transform.SetParent(gameObject.transform);
             newPlant.transform.position = newPos;
+
+            plantObjs.Add(newPlant);
+
+            newPlant.GetComponent<Plant>().RandomizePlantSprite(); //Randomize the plant sprite
+
+            //Spawn plants in clusters
+            int clusterSize = Random.Range(0, 5);
+
+            for (int j = 0; j < clusterSize; j++)
+            {
+                GameObject clusterPlant = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Plants/Plant_Obj"));
+
+                Vector3 clusterPlantPos = newPlant.transform.position;
+
+                //Randomize the position around the parent plant
+                float randX = Random.Range(-CLUSTER_OFFSET, CLUSTER_OFFSET);
+                float randZ = Random.Range(-CLUSTER_OFFSET, CLUSTER_OFFSET);
+
+                clusterPlantPos.x += randX;
+                clusterPlantPos.z += randZ;
+
+                float yPos = clusterPlantPos.y;
+
+                //Use a raycast to determine the height
+                Vector3 rayPos = new Vector3(clusterPlantPos.x, 100, clusterPlantPos.z);
+                RaycastHit hit;
+                Ray ray = new Ray(rayPos, Vector3.down);
+
+                if (Physics.Raycast(ray, out hit))
+                    yPos = hit.point.y;
+                clusterPlantPos.y = yPos;
+
+                clusterPlant.transform.SetParent(gameObject.transform);
+                clusterPlant.transform.position = clusterPlantPos;
+
+                //Force the plant sprite to match
+                clusterPlant.GetComponent<Plant>().SetPlantSprite(newPlant.GetComponent<Plant>().PlantSprite);
+
+                plantObjs.Add(clusterPlant);
+            }
         }
     }
 
